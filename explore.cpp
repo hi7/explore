@@ -68,12 +68,22 @@ void render(uint32_t time) {
     screen.alpha = 255;
     screen.mask = nullptr;
     Point origin(8, 23);
-    screen.sprite(Rect(anim_x, anim_y, 2, 3), bones_position, origin);
-    if(time > 3000 && time < 5000) {
+    if(time > 1000 && time < 3000) {
         say("hello mortal", Point(bones_position.x + 6, bones_position.y - 24), NE);
     }
+    if(time > 2000) {
+        screen.sprite(Rect(anim_x, anim_y, 2, 3), bones_position, origin);
+    }
 
-    screen.pen = Pen(0, 0, 0); // background color
+    // set background color
+    if(time < 5000) {
+        screen.pen = Pen(0, 0, 0);
+    } else if(time < 15000) {
+        uint8_t value = (uint8_t) ((time - 5000) / 100);
+        screen.pen = Pen(value, value, value);
+    } else {
+        screen.pen = Pen(100, 100, 100);
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -94,8 +104,12 @@ void update(uint32_t time) {
     if(rest > movement) {
         anim_x = 0;
     }
-    if(rest > 6000) {
+    if(rest > 8000) {
         anim_x = (time / 100 % 2) * 2;
+    }
+    if (buttons.state & Button::A) {
+        anim_x = 8;
+        rest = 0;
     }
     if ((time % movement == 0) && (buttons.state & Button::DPAD_LEFT) && (bones_position.x > 8 + border.x)) {
         bones_position.x -= 8;
