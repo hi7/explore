@@ -1,11 +1,19 @@
 #include "explore.hpp"
+#include "assets.hpp"
 
 using namespace blit;
+
+//const uint16_t screen_width = 320;
+//const uint16_t screen_height = 240;
+const Point center(160, 120);
+int32_t anim_x = 0;
+int32_t anim_y = 0;
 
 enum Direction { NE = 0, SE = 1, SW = 2, NW = 3 };
 
 void init() {
     set_screen_mode(ScreenMode::hires);
+    screen.sprites = Surface::load(bones_sheet);
 }
 
 bool isNorth(const Direction d) {
@@ -59,7 +67,12 @@ void render(uint32_t time) {
     // draw some text at the top of the screen
     screen.alpha = 255;
     screen.mask = nullptr;
-    say("hello mortal", Point(160, 120), NE);
+    Point position = center;
+    Point origin(8, 23);
+    screen.sprite(Rect(anim_x, anim_y, 2, 3), position, origin);
+    say("hello mortal", Point(position.x + 6, position.y - 24), NE);
+
+    screen.pen = Pen(0, 0, 0); // background color
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -70,4 +83,7 @@ void render(uint32_t time) {
 // amount if milliseconds elapsed since the start of your game
 //
 void update(uint32_t time) {
+    if(time > 5000) {
+        anim_x = (time / 100 % 2) * 2;
+    }
 }
