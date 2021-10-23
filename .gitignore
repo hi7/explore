@@ -1,0 +1,4 @@
+build/
+build.em/
+build.stm32/
+.vscode/settings.json
