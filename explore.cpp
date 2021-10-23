@@ -28,22 +28,21 @@ bool isWest(const Direction d) {
  * \param p Point to align text to
  * \param d Direction of speech bubble
  */
-void say(std::string_view message, const Point &p, const Direction d) {
+void say(std::string_view message, const Point &p, const Direction d = NE) {
     int32_t width = message.length() * 6;
     int32_t height = 15;
     screen.pen = Pen(255, 255, 255);
-    screen.rectangle(Rect(p.x + 3, p.y - 16, width, height));
-    screen.rectangle(Rect(p.x + 2, p.y - 2, 2, 2));
-    screen.rectangle(Rect(p.x + 1, p.y - 1, 1, 2));
-    screen.pixel(Point(p.x, p.y)); // +8 -12
+    screen.rectangle(Rect(p.x + (isEast(d) ? +2 : -width -2), p.y + (isNorth(d) ? -16 : +2) , width, height));
+    screen.rectangle(Rect(p.x + (isEast(d) ? +2 : -3), p.y + (isNorth(d) ? -2 : +1), 2, 2));
+    screen.rectangle(Rect(p.x + (isEast(d) ? +1 : -1), p.y + (isNorth(d) ? -1 : 0), 1, 2));
+    screen.pixel(Point(p.x, p.y));
 
     screen.pen = Pen(0, 0, 0);
-    screen.pixel(Point(p.x +3, p.y - 16));
-    screen.pixel(Point(p.x + width + 2, p.y - 16));
-    screen.pixel(Point(p.x + width + 2, p.y - 2));
-    screen.pen = Pen(0, 0, 0);
+    screen.pixel(Point(p.x +(isEast(d) ? width +1 : -width -2), p.y + (isNorth(d) ? -2 : +2)));
+    screen.pixel(Point(p.x + (isEast(d) ? width+1 : -3), p.y + (isNorth(d) ? -16 : +16)));
+    screen.pixel(Point(p.x + (isEast(d) ? +2 : -width-2), p.y + (isNorth(d) ? -16 : +16)));
 
-    screen.text("Hello mortal", minimal_font, Point(p.x + 11, p.y - 12));
+    screen.text("Hello mortal", minimal_font, Point(p.x + (isEast(d) ? +8 : -width +3), p.y + (isNorth(d) ? -12 : +6)));
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -61,7 +60,7 @@ void render(uint32_t time) {
     // draw some text at the top of the screen
     screen.alpha = 255;
     screen.mask = nullptr;
-    say("hello mortal!", Point(160, 120), NE);
+    say("hello mortal", Point(160, 120), NW);
 }
 
 ///////////////////////////////////////////////////////////////////////////
