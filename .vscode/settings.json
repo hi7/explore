@@ -3,6 +3,8 @@
         "32BLIT_DIR": "/home/hilger/src/32blit/32blit-sdk"
     },
     "files.associations": {
-        "string_view": "cpp"
+        "string_view": "cpp",
+        "*.ipp": "cpp",
+        "*.tcc": "cpp"
     },
 }

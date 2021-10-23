@@ -3,9 +3,9 @@
 
 using namespace blit;
 
-//const uint16_t screen_width = 320;
-//const uint16_t screen_height = 240;
 const Point center(160, 120);
+Point bones_position = center;
+
 int32_t anim_x = 0;
 int32_t anim_y = 0;
 
@@ -67,10 +67,11 @@ void render(uint32_t time) {
     // draw some text at the top of the screen
     screen.alpha = 255;
     screen.mask = nullptr;
-    Point position = center;
     Point origin(8, 23);
-    screen.sprite(Rect(anim_x, anim_y, 2, 3), position, origin);
-    say("hello mortal", Point(position.x + 6, position.y - 24), NE);
+    screen.sprite(Rect(anim_x, anim_y, 2, 3), bones_position, origin);
+    if(time > 3000 && time < 5000) {
+        say("hello mortal", Point(bones_position.x + 6, bones_position.y - 24), NE);
+    }
 
     screen.pen = Pen(0, 0, 0); // background color
 }
@@ -82,8 +83,39 @@ void render(uint32_t time) {
 // This is called to update your game state. time is the 
 // amount if milliseconds elapsed since the start of your game
 //
+const Point border(60, 40);
+const uint32_t movement = 20;
+uint32_t rest = 0; 
+uint32_t last_update = 0;
+uint32_t delta = 0;
 void update(uint32_t time) {
-    if(time > 5000) {
+    delta = time - last_update;
+    rest += delta;
+    if(rest > movement) {
+        anim_x = 0;
+    }
+    if(rest > 6000) {
         anim_x = (time / 100 % 2) * 2;
     }
+    if ((time % movement == 0) && (buttons.state & Button::DPAD_LEFT) && (bones_position.x > 8 + border.x)) {
+        bones_position.x -= 8;
+        anim_x = (anim_x == 4 ? 6 : 4);
+        rest = 0;
+    }
+    if ((time % movement == 0) && (buttons.state & Button::DPAD_RIGHT) && (bones_position.x < 312 - border.x)) {
+        bones_position.x += 8;
+        anim_x = (anim_x == 4 ? 6 : 4);
+        rest = 0;
+    }
+    if ((time % movement == 0) && (buttons.state & Button::DPAD_UP) && (bones_position.y > 32 + border.y)) {
+        bones_position.y -= 8;
+        anim_x = (anim_x == 4 ? 6 : 4);
+        rest = 0;
+    }
+    if ((time % movement == 0) && (buttons.state & Button::DPAD_DOWN) && (bones_position.y < 232 - border.y)) {
+        bones_position.y += 8;
+        anim_x = (anim_x == 4 ? 6 : 4);
+        rest = 0;
+    }
+    last_update = time;
 }
