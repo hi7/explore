@@ -42,7 +42,7 @@ void say(std::string_view message, const Point &p, const Direction d = NE) {
     screen.pixel(Point(p.x + (isEast(d) ? width+1 : -3), p.y + (isNorth(d) ? -16 : +16)));
     screen.pixel(Point(p.x + (isEast(d) ? +2 : -width-2), p.y + (isNorth(d) ? -16 : +16)));
 
-    screen.text("Hello mortal", minimal_font, Point(p.x + (isEast(d) ? +8 : -width +3), p.y + (isNorth(d) ? -12 : +6)));
+    screen.text(message, minimal_font, Point(p.x + (isEast(d) ? +8 : -width +3), p.y + (isNorth(d) ? -12 : +6)));
 }
 
 ///////////////////////////////////////////////////////////////////////////
