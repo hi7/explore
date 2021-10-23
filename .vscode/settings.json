@@ -1,0 +1,8 @@
+{
+    "cmake.configureSettings": {
+        "32BLIT_DIR": "/home/hilger/src/32blit/32blit-sdk"
+    },
+    "files.associations": {
+        "string_view": "cpp"
+    },
+}
