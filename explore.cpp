@@ -53,14 +53,13 @@ void say(std::string_view message, const Point &p, const Direction d = NE) {
 // amount if milliseconds elapsed since the start of your game
 //
 void render(uint32_t time) {
-
     // clear the screen -- screen is a reference to the frame buffer and can be used to draw all things with the 32blit
     screen.clear();
 
     // draw some text at the top of the screen
     screen.alpha = 255;
     screen.mask = nullptr;
-    say("hello mortal", Point(160, 120), NW);
+    say("hello mortal", Point(160, 120), NE);
 }
 
 ///////////////////////////////////////////////////////////////////////////
