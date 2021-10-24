@@ -37,7 +37,7 @@ bool isWest(const Direction d) {
  * \param d Direction of speech bubble
  */
 void say(std::string_view message, const Point &p, const Direction d = NE) {
-    int32_t width = message.length() * 6;
+    int32_t width = screen.measure_text(message, minimal_font).w + 11;
     int32_t height = 15;
     screen.pen = Pen(255, 255, 255);
     screen.rectangle(Rect(p.x + (isEast(d) ? +2 : -width -2), p.y + (isNorth(d) ? -16 : +2) , width, height));
@@ -73,6 +73,9 @@ void render(uint32_t time) {
     }
     if(time > 2000) {
         screen.sprite(Rect(anim_x, anim_y, 2, 3), bones_position, origin);
+    }
+    if(time > 7000 && time < 9000) {
+        say("move along", Point(bones_position.x + 6, bones_position.y - 24), NE);
     }
 
     // set background color
